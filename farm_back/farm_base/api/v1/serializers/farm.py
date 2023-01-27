@@ -10,16 +10,25 @@ from farm_base.models import Farm
 class FarmListSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(FarmListSerializer, self).__init__(*args, **kwargs)
-        request = kwargs['context']['request']
-        include_geometry = request.GET.get('include_geometry', "false")
+        request = kwargs["context"]["request"]
+        include_geometry = request.GET.get("include_geometry", "false")
 
         if include_geometry.lower() == "true":
-            self.fields['geometry'] = GeometryField(read_only=True)
+            self.fields["geometry"] = GeometryField(read_only=True)
 
     class Meta:
         model = Farm
-        fields = ['id', 'name', 'centroid', 'area']
-        read_only_fields = ['id', 'centroid', 'area']
+        #  added all filds od the model
+        fields = [
+            "id",
+            "name",
+            "centroid",
+            "area",
+            "municipality",
+            "state",
+            "owner",
+        ]
+        read_only_fields = ["id", "centroid", "area"]
 
 
 class FarmCreateSerializer(serializers.ModelSerializer):
@@ -32,8 +41,35 @@ class FarmCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Farm
-        fields = ['id', 'name', 'geometry', 'centroid', 'area']
-        read_only_fields = ['id', 'centroid', 'area']
+        fields = [
+            "id",
+            "name",
+            "geometry",
+            "centroid",
+            "area",
+            "municipality",
+            "state",
+            "owner",
+        ]
+        read_only_fields = ["id", "centroid", "area"]
+
+    def validate(self, data):
+        print("EEEEENNNNNTTTROUUU")
+        owner = data.get("owner", None)
+        municipality = data.get("municipality", None)
+        state = data.get("state", None)
+        name = data.get("name", None)
+
+        if not owner:
+            raise serializers.ValidationError("Farm must have an owner.")
+        if not municipality:
+            raise serializers.ValidationError("Farm must have a municipality.")
+        if not state:
+            raise serializers.ValidationError("Farm must have a state.")
+        if not name:
+            raise serializers.ValidationError("Farm must have a name.")
+
+        return data
 
 
 class FarmDetailSerializer(serializers.ModelSerializer):
@@ -41,5 +77,5 @@ class FarmDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Farm
-        fields = '__all__'
-        read_only_fields = ['id', 'centroid', 'area']
+        fields = "__all__"
+        read_only_fields = ["id", "centroid", "area"]

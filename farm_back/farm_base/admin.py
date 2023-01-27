@@ -16,7 +16,7 @@ class OwnerAdmin(admin.ModelAdmin):
 
 
 class FarmAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name',
+    list_display = ['id', 'name', 'municipality', 'state', 'owner',
                     'creation_date', 'last_modification_date',
                     'is_active']
     list_filter = ['creation_date', 'last_modification_date', 'is_active']

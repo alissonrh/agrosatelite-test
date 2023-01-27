@@ -1,7 +1,10 @@
 from rest_framework import generics
 
-from farm_base.api.v1.serializers import FarmListSerializer, \
-    FarmCreateSerializer, FarmDetailSerializer
+from farm_base.api.v1.serializers import (
+    FarmListSerializer,
+    FarmCreateSerializer,
+    FarmDetailSerializer,
+)
 from farm_base.models import Farm
 
 
@@ -10,7 +13,7 @@ class FarmListCreateView(generics.ListCreateAPIView):
     serializer_class = FarmListSerializer
 
     def get_serializer_class(self):
-        if self.request.method == 'GET':
+        if self.request.method == "GET":
             return FarmListSerializer
         else:
             return FarmCreateSerializer
@@ -22,7 +25,6 @@ class FarmListCreateView(generics.ListCreateAPIView):
         serializer.save(area=area, centroid=centroid)
 
 
-class FarmRetrieveUpdateDestroyView(
-    generics.RetrieveUpdateDestroyAPIView):
+class FarmRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Farm.objects.filter(is_active=True)
     serializer_class = FarmDetailSerializer
