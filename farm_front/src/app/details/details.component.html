@@ -1,0 +1,11 @@
+<div *ngIf="farm">
+  <h2>{{farm.name}}</h2>
+  <p>Cidade: {{farm.municipality}}</p>
+  <p>Estado: {{farm.state}}</p>
+  <p>Área: {{farm.area}}</p>
+  <p>Centróide: {{farm.centroid.coordinates}}</p>
+  <p>Nome do dono: {{farm.owner.name}}</p>
+  <p>ID do dono: {{farm.owner.id}}</p>
+  <button class="edit" (click)="edit(farm.id)">Editar</button>
+  <button class="delete" (click)="delete()">Excluir</button>
+</div>

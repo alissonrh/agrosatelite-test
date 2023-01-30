@@ -1,9 +1,12 @@
 import { Owner } from './Owner'
+
 export interface Farm {
-  name: string
-  geomtry: any
-  area: number
-  centroid: number[]
-  creation_date?: Date
-  owner: Owner
-}
+  id?: string,
+  name: string,
+  geometry: any,
+  area?: number,
+  centroid?: number[],
+  municipality?: string,
+  state?: string,
+  owner?: Owner | {}
+  }

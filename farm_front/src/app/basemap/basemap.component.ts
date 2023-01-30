@@ -6,6 +6,10 @@ import _pick from 'lodash/pickBy'
 import _values from 'lodash/values'
 import { easeOut } from 'ol/easing.js'
 import Layer from 'ol/layer'
+import { Vector as VectorLayer } from 'ol/layer.js';
+import Feature from 'ol/Feature';
+import { Point } from 'ol/geom.js';
+import { Vector as VectorSource } from 'ol/source.js';
 import Tile from 'ol/layer/Tile'
 import Map from 'ol/Map'
 import XYZ from 'ol/source/XYZ'
@@ -13,11 +17,11 @@ import View from 'ol/View'
 import { MapService } from '../map.service'
 
 const DEFAULTS = {
-  center: [-6500000, -1700000] as [number, number],
+  center: [0, 0] as [number, number],
   resolution: 4900,
   minZoom: 4,
   maxZoom: 17,
-}
+};
 
 @Component({
   selector: 'app-basemap',
@@ -36,13 +40,42 @@ export class BasemapComponent {
     maxZoom: 11,
   }
 
-  constructor(private _mapService: MapService) {}
+  ngOnInit() {
+    this.getCurrentLocation();
+  }
 
-  mapInit() {
-    this._mapService.map = this
+  getCurrentLocation() {
+    let center = [] as unknown as [number, number]
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {  
+        DEFAULTS.center = [position.coords.latitude, position.coords.longitude];
+        console.log('center', DEFAULTS.center);
+        this.mapInit();
+      }); 
+    } else {
+      alert("Geolocation is not supported by this browser.");
+      this.mapInit();
+    }
+    return center
+  }
+
+  constructor(private _mapService: MapService) { }
+
+  mapInit() {    
+    this._mapService.map = this;
     this._map = new Map({
       target: this.$mapContainer.nativeElement,
-      layers: this.getInitialLayers(),
+      layers: this.getInitialLayers().concat([
+        new VectorLayer({
+          source: new VectorSource({
+            features: [
+              new Feature({
+                geometry: new Point(DEFAULTS.center),
+              }),
+            ],
+          }),
+        }),
+      ]),
       loadTilesWhileAnimating: false,
       view: new View({
         center: DEFAULTS.center,
@@ -51,15 +84,15 @@ export class BasemapComponent {
         maxZoom: DEFAULTS.maxZoom,
       }),
       controls: [],
-    })
-    ;(window as any).__map = this._map
+    });
+    (window as any).__map = this._map;
   }
 
-  async ngAfterViewInit() {
+  /* async ngAfterViewInit() {
     try {
       await this.mapInit()
-    } catch {}
-  }
+    } catch { }
+  } */
 
   public setAddons(
     addons: Record<string, MapAddon | undefined>,
@@ -69,10 +102,10 @@ export class BasemapComponent {
     const keep = force
       ? {}
       : _pick(this.addons, (_v, key) => {
-          if (key.startsWith('root::')) return true
-          if (key.startsWith('base_layer::')) return true
-          return false
-        })
+        if (key.startsWith('root::')) return true
+        if (key.startsWith('base_layer::')) return true
+        return false
+      })
     const toSet = { ...keep, ...addons }
     this.__updateAddons(this.addons, toSet, mountOnInclude)
     this.addons = toSet
@@ -181,7 +214,25 @@ export class BasemapComponent {
         crossOrigin: 'Anonymous',
       }),
     })
-    this._initialLayers = [rasterLayer]
+    const vectorLayer = new VectorLayer({
+      source: new VectorSource({
+        features: [
+          new Feature({
+            geometry: new Point(DEFAULTS.center),
+          }),
+        ],
+      }),
+    });
+    this._initialLayers = [rasterLayer, vectorLayer];
     return this._initialLayers
   }
 }
+
+/* Estou usando a API do OpenLayers. Gostaria de uma função que pegasse as coordenadas de localização do usuário do chrome e colocasse em DEFAULTS.center
+
+const DEFAULTS = {
+  center: [-6500000, -1700000] as [number, number],
+  resolution: 4900,
+  minZoom: 4,
+  maxZoom: 17,
+} */

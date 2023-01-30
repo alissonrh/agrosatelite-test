@@ -1,0 +1,48 @@
+button {
+  background-color: #4CAF50; 
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  margin: 2px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.draw {
+  background-color: blue; 
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  margin: 2px 2px 10px 2px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.back {
+  background-color: darkgoldenrod; 
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  margin: 2px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+p {
+  margin: 2px;
+}
+
+.container {
+  text-align: center;
+  margin-top: 50px;
+  border: black 1px solid;
+  padding: 5px;
+}

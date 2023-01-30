@@ -1,5 +1,8 @@
-from rest_framework import generics
+from rest_framework import generics, filters
+from django_filters.rest_framework import DjangoFilterBackend
 
+
+from farm_base.api.v1.filters import FarmFilter
 from farm_base.api.v1.serializers import (
     FarmListSerializer,
     FarmCreateSerializer,
@@ -7,10 +10,20 @@ from farm_base.api.v1.serializers import (
 )
 from farm_base.models import Farm
 
+#  Filtros adicionados
+
 
 class FarmListCreateView(generics.ListCreateAPIView):
     queryset = Farm.objects.filter(is_active=True)
     serializer_class = FarmListSerializer
+    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
+    filterset_class = FarmFilter
+    search_fields = [
+        "name",
+        "owner",
+        "municipality",
+        "state",
+    ]
 
     def get_serializer_class(self):
         if self.request.method == "GET":

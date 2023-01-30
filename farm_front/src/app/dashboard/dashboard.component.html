@@ -1,0 +1,7 @@
+<div>
+  <h2>Fazendas Cadastradas</h2>
+  <div *ngFor="let farm of farms">
+    <p (click)="goToDetails(farm.id)">{{farm.name}}</p>
+  </div>
+  <button routerLink="farm">Cadastrar Nova Fazenda</button>
+</div>
