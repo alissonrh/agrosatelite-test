@@ -97,7 +97,7 @@ export class FarmEditComponent implements OnInit {
     console.log("entrou");
     
     this.farmService.update(Number(this.farm.id), this.farm).subscribe(() => {
-      alert(`Fazenda ${this.farm.name} Atualizada com Sucesso`)
+      alert(`${this.farm.name} Atualizada com Sucesso`)
       this.router.navigate(['/']);
     }, error => {
       console.error('Error', error)

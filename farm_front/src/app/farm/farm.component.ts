@@ -85,7 +85,7 @@ export class FarmComponent implements OnInit {
     this.farmService.create(this.farm).subscribe(response => {
       console.log('Success', response)
       this.router.navigate(['/farm']);
-      alert(`Fazenda ${this.farm.name} Cadastrada com Sucesso`)
+      alert(`${this.farm.name} Cadastrada com Sucesso`)
       this._map.removeByPrefix('geometry');
       this._geometries = [];
       this.farm = {
