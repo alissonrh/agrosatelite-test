@@ -36,4 +36,4 @@ Currently the project has a frontend and a backend component.
 In each project's folder you will find a Readme file. In those files are detailed instructions of the tasks to be done and as well as a guide on how to install and execute the project.
 We expect you to download this source, follow the instructions and help is improving this project.
 
-Good luck. We hope that you enjoy the challenge :)
+Good luck. We hope that you enjoy the challenge

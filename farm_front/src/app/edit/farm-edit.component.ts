@@ -40,9 +40,7 @@ export class FarmEditComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     console.log('id', id);
-    
-    
-    
+  
     if (id) {
       console.log(this.farm);
       this.farmService.read(Number(id)).subscribe(farm => this.farm = farm);
@@ -93,9 +91,7 @@ export class FarmEditComponent implements OnInit {
     this._map.removeByPrefix('geometry')
   }
 
-  update() {
-    console.log("entrou");
-    
+  update() {    
     this.farmService.update(Number(this.farm.id), this.farm).subscribe(() => {
       alert(`${this.farm.name} Atualizada com Sucesso`)
       this.router.navigate(['/']);
